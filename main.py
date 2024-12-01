@@ -1,9 +1,9 @@
 import curses
-from os import system
+import os
 from agent import InitAI
 
 def main():
-    system("cls")
+    os.system("cls")
     print("Paste in the path of the sulution file\n")
     path = input()
     path = path.replace('"', "")
@@ -28,7 +28,23 @@ def main():
         return
     project = projects[selection]
     print("You selected: " + project)
-    InitAI()
+    folder = os.path.dirname(path) + "\\" + project.split("\\")[0]
+    os.chdir(folder)
+    csFiles = []
+    for file in os.listdir():
+        if (file.endswith(".cs")):
+            csFile = open(f"{folder}\{file}", "r")
+            csFileLines = csFile.readlines()
+            notInterface = True
+            for line in csFileLines:
+                if (line.find("interface") != -1):
+                    notInterface = False
+            if (notInterface):
+                csFiles.append(file)
+                messageToAi = "\n".join(csFileLines)
+                InitAI(messageToAi)
+                print(file)
+    #InitAI()
     print("Tests created for: " + project)
 
 
