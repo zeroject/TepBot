@@ -48,6 +48,16 @@ def InitAI(entireCode):
             os.remove(file_path)
             if os.path.exists("Program.exe"):
                 os.remove("Program.exe")
+        
+    def csharp_execution_hook(agent, message):
+        """Intercepts messages containing C# code and executes them."""
+        if message.startswith("# filename:"):
+            print("C# Detected custom c# executiong")
+            result = execute_csharp_code(message.split("\n", 1)[1])
+            print(f"C# Execution Result:\n{result}")
+            return result
+
+    userProxy.register_hook("execute_csharp_code", csharp_execution_hook)
 
     userProxy.initiate_chat(
         assistant,
