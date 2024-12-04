@@ -1,9 +1,9 @@
-import sys
 import os
+import re
 import subprocess
 from autogen import AssistantAgent, UserProxyAgent
 
-def InitAI(entireCode):
+def InitAI(entireCode, projectPath):
     config_list = [
         {
             "model": "llama3.2",
@@ -16,10 +16,9 @@ def InitAI(entireCode):
         name="assistant",
         llm_config={
             "config_list": config_list,
-            "seed": 42,
             "temperature": 0,
         },
-        system_message="YOU ARE A CODING ASSITENT HELPING WITH CREATING TESTS FOR C#. IF ANYTHING REQURIES TO BE MOCKED USE NSUBSTITUDE FOR MOCKING PORPUSES. IF YOU WANT THE USER TO SAVE THE CODE IN A FILE BEFORE EXECUTING IT, PUT # filename: <filename> inside the code block as the first line. DONT INCLUDE MUTIPLE CODE BLOCKS IN ONE RESPONSE. WHEN EVERYTHING IS DONE AND THE RESULT IS CORRECT REPLY WITH 'TERMINATE'",
+        system_message=f"YOU ARE A CODING ASSITENT HELPING WITH CREATING TESTS FOR C#. IF ANYTHING REQURIES TO BE MOCKED YOU HAVE THE NSUBSTITUDE PACKAGE AVAIBLE FOR MOCKING PORPUSES. A XUNIT PROJECT HAS BEEN MADE FOR YOU, YOU JUST HAVE TO CREATE XUNIT CS FILE WITH YOUR TEST IN IT USE THE NAMESPACE {os.path.basename(projectPath)}. DONT INCLUDE MUTIPLE CODE BLOCKS IN ONE RESPONSE. WHEN EVERYTHING IS DONE AND THE RESULT IS CORRECT REPLY WITH 'TERMINATE'",
     )
 
     userProxy = UserProxyAgent(
@@ -31,33 +30,28 @@ def InitAI(entireCode):
     )
 
     def execute_csharp_code(csharp_code):
-        file_path = "Program.cs"
+        file_path = os.path.join(os.path.dirname(projectPath), "TestingUnit.cs")
         with open(file_path, "w") as file:
             file.write(csharp_code)
 
         # Compile and run the code
-        try:
-            compile_process = subprocess.run(["csc", file_path], capture_output=True)
-            if compile_process.returncode != 0:
-                return f"Compilation error: {compile_process.stderr.decode()}"
+        compile_process = subprocess.run(["dotnet", "build", projectPath], capture_output=True)
+        if compile_process.returncode != 0:
+            return f"Compilation error: {compile_process.stderr.decode()}"
 
-            executable_path = "Program.exe"
-            run_process = subprocess.run([executable_path], capture_output=True)
-            return run_process.stdout.decode()
-        finally:
-            os.remove(file_path)
-            if os.path.exists("Program.exe"):
-                os.remove("Program.exe")
+        run_process = subprocess.run(["dotnet", "test", projectPath], capture_output=True)
+        return run_process.stdout.decode()
+            
         
-    def csharp_execution_hook(agent, message):
-        """Intercepts messages containing C# code and executes them."""
-        if message.startswith("# filename:"):
+    def csharp_execution_hook(message):
+        match = re.search(r'```csharp\n(.*?)```', message[1]['content'], re.DOTALL)
+        if match:
             print("C# Detected custom c# executiong")
-            result = execute_csharp_code(message.split("\n", 1)[1])
+            result = execute_csharp_code(match.group(1).strip())
             print(f"C# Execution Result:\n{result}")
             return result
 
-    userProxy.register_hook("execute_csharp_code", csharp_execution_hook)
+    userProxy.register_hook("process_all_messages_before_reply", csharp_execution_hook)
 
     userProxy.initiate_chat(
         assistant,

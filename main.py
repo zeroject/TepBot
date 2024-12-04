@@ -1,6 +1,6 @@
-import curses
 import os
 from agent import InitAI
+from testProjectCreation import CreateTestProject
 
 def main():
     os.system("cls")
@@ -28,6 +28,7 @@ def main():
         return
     project = projects[selection]
     print("You selected: " + project)
+    CreateTestProject(os.path.dirname(path), os.path.basename(path))
     folder = os.path.dirname(path) + "\\" + project.split("\\")[0]
     os.chdir(folder)
     csFiles = []
@@ -42,7 +43,7 @@ def main():
             if (notInterface):
                 csFiles.append(file)
                 messageToAi = "\n".join(csFileLines)
-                InitAI(messageToAi)
+                InitAI(messageToAi, os.path.join(os.path.dirname(path), "test/test.csproj"))
                 print(file)
     #InitAI()
     print("Tests created for: " + project)
