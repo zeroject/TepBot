@@ -1,4 +1,5 @@
 import os
+import random
 from agent import InitAI
 from testProjectCreation import CreateTestProject
 
@@ -28,7 +29,7 @@ def main():
         return
     project = projects[selection]
     print("You selected: " + project)
-    CreateTestProject(os.path.dirname(path), os.path.basename(path))
+    CreateTestProject(os.path.dirname(path), os.path.basename(path), projects)
     folder = os.path.dirname(path) + "\\" + project.split("\\")[0]
     os.chdir(folder)
     csFiles = []
@@ -43,7 +44,7 @@ def main():
             if (notInterface):
                 csFiles.append(file)
                 messageToAi = "\n".join(csFileLines)
-                InitAI(messageToAi, os.path.join(os.path.dirname(path), "test/test.csproj"))
+                InitAI(messageToAi, os.path.join(os.path.dirname(path), "test/test.csproj"), f"TestingUnit{random.randint(0, 2000)}.cs", projects)
                 print(file)
     #InitAI()
     print("Tests created for: " + project)

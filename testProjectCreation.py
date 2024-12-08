@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-def CreateTestProject(path, solutionName):
+def CreateTestProject(path, solutionName, otherProjects):
     projectName = "test"
     os.chdir(path)
     os.mkdir(projectName)
@@ -10,7 +10,9 @@ def CreateTestProject(path, solutionName):
         print(f"Failed to create testProject: {testProjectProcess.stderr.decode()}")
     else:
         print("Test project was created")
-        giveRefrencestoTestProject = subprocess.run(["dotnet", "add", os.path.join(path, f"{projectName}/{projectName}.csproj"), "reference"])
+        for project in otherProjects:
+            giveRefrencestoTestProject = subprocess.run(["dotnet", "add", os.path.join(path, f"{projectName}/{projectName}.csproj"), "reference", project])
+        addNuggetPackage = subprocess.run(["dotnet", "add", os.path.join(path, f"{projectName}/{projectName}.csproj"), "package", "Moq"])
         addTestPToSlnProcess = subprocess.run(["dotnet", "sln", os.path.join(path, solutionName), "add", os.path.join(path, f"{projectName}/{projectName}.csproj")], capture_output=True)
         if addTestPToSlnProcess.returncode != 0:
             print(f"Failed to attach Test project to solution: {addTestPToSlnProcess.stderr.decode()}")

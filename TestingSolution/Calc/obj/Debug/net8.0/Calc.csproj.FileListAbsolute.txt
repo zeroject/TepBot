@@ -1,0 +1,12 @@
+G:\Github\TepBot\TestingSolution\Calc\bin\Debug\net8.0\Calc.deps.json
+G:\Github\TepBot\TestingSolution\Calc\bin\Debug\net8.0\Calc.dll
+G:\Github\TepBot\TestingSolution\Calc\bin\Debug\net8.0\Calc.pdb
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.GeneratedMSBuildEditorConfig.editorconfig
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.AssemblyInfoInputs.cache
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.AssemblyInfo.cs
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.csproj.CoreCompileInputs.cache
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.sourcelink.json
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.dll
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\refint\Calc.dll
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\Calc.pdb
+G:\Github\TepBot\TestingSolution\Calc\obj\Debug\net8.0\ref\Calc.dll
