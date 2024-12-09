@@ -58,7 +58,18 @@ def InitAI(entireCode, projectPath, unitTestName, otherProjects):
         
     extraMsg = "ADD THEESE PROJECTS AS 'USING projectName' IN THE TOP OF THE FILE, HERE ARE ALL OF THE PROJECTS YOU NEED TO ADD USING INFRONT OF"
     for project in otherProjects:
-        extraMsg += project.split('\\')[0]
+        extraMsg += "using " + project.split('\\')[0] + ";"
+
+    system_message = (
+        "YOU ARE A CODING ASSISTANT HELPING WITH CREATING TESTS FOR C#."
+        " IF ANYTHING REQUIRES TO BE MOCKED, YOU HAVE THE MOQ PACKAGE AVAILABLE FOR MOCKING PURPOSES."
+        f" A XUNIT PROJECT HAS BEEN MADE FOR YOU. YOU JUST HAVE TO CREATE AN XUNIT CS FILE WITH YOUR TESTS IN IT USING THE NAMESPACE {os.path.basename(projectPath)}."
+        " ALWAYS INCLUDE THE ENTIRE CS FILE EVEN IF YOU JUST MADE A SMALL CHANGE TO IT."
+        f" REMEMBER THIS: {extraMsg}"
+        " IGNORE ALL WARNINGS GIVEN TO YOU, ONLY FOCUS ON ERRORS."
+        " DON'T INCLUDE MULTIPLE CODE BLOCKS IN ONE RESPONSE."
+        " WHEN EVERY ERROR HAS BEEN RESOLVED AND ALL TESTS HAVE PASSED, REPLY WITH 'TERMINATE'."
+    )
 
     assistant = AssistantAgent(
         name="assistant",
@@ -66,15 +77,7 @@ def InitAI(entireCode, projectPath, unitTestName, otherProjects):
             "config_list": config_list,
             "temperature": 0,
         },
-
-        system_message="YOU ARE A CODING ASSITENT HELPING WITH CREATING TESTS FOR C#."+
-                        "IF ANYTHING REQURIES TO BE MOCKED YOU HAVE THE MOQ PACKAGE AVAIBLE FOR MOCKING PORPUSES."+ 
-                        f"A XUNIT PROJECT HAS BEEN MADE FOR YOU, YOU JUST HAVE TO CREATE XUNIT CS FILE WITH YOUR TEST IN IT USE THE NAMESPACE {os.path.basename(projectPath)}."+ 
-                        "ALLWAYS INCLUDE THE ENTIRE CS FILE EVEN IF YOU JUST MADE A SMALL CHANGE TO IT."+
-                        f"AND REMEBER THIS {extraMsg}."+ 
-                        "IGNORE ALL WARNINGS GIVEN TOO YOU ONLY FOCUS ON ERRORS. "+
-                        "DONT INCLUDE MUTIPLE CODE BLOCKS IN ONE RESPONSE. "+
-                        "WHEN EVERYTHING IS DONE AND THE RESULT IS CORRECT REPLY WITH 'TERMINATE'",
+        system_message=system_message,
     )
 
     userProxy = UserProxyAgent(

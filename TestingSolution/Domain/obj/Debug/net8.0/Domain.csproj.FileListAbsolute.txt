@@ -1,0 +1,12 @@
+G:\Github\TepBot\TestingSolution\Domain\bin\Debug\net8.0\Domain.deps.json
+G:\Github\TepBot\TestingSolution\Domain\bin\Debug\net8.0\Domain.dll
+G:\Github\TepBot\TestingSolution\Domain\bin\Debug\net8.0\Domain.pdb
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.sourcelink.json
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.dll
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\refint\Domain.dll
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\Domain.pdb
+G:\Github\TepBot\TestingSolution\Domain\obj\Debug\net8.0\ref\Domain.dll

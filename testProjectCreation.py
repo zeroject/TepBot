@@ -4,6 +4,12 @@ import os
 def CreateTestProject(path, solutionName, otherProjects):
     projectName = "test"
     os.chdir(path)
+    if os.path.exists(os.path.join(path, projectName)):
+        print("A test project allready exists")
+        for project in otherProjects:
+            giveRefrencestoTestProject = subprocess.run(["dotnet", "add", os.path.join(path, f"{projectName}/{projectName}.csproj"), "reference", project])
+        return
+
     os.mkdir(projectName)
     testProjectProcess = subprocess.run(["dotnet", "new", "xunit", "-n", projectName, "-o", os.path.join(path, projectName)], capture_output=True)
     if testProjectProcess.returncode != 0:
